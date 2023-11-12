@@ -4,13 +4,29 @@ const startButton = document.querySelector('.start-button');
   // word blanks div
 const wordBlanks = document.querySelector('.word-blanks');	
 
+const validChars = "abcdefghijklmnopqrstuvwxyz"
+
 // defines an array of words
 const words = [ "modulus", "boolean", "object", "variable","array", "python", "string", "interval", "localstorage", "function" ];
-
+// word var
 let word;
+  // assigns an array to the variable guessedchars
+let guessedChars = [];
 
-// score variable
-// timer variable
+// score var
+// timer var
+
+
+function handleKeyDown(e) {
+  // validate key
+  if (validChars.includes(e.key)) {
+    // keep track of character pressed
+      //whichever character is pressed, it is pushed into the guessedchars array 
+    guessedChars.push(e.key)
+    // rerender wordblanks text content
+    renderChars();
+  }
+}
 
 // resets word blanks, an "_" for each letter of the new word
   // takes random word and splits it into letters
@@ -18,11 +34,16 @@ function renderChars(){
   // var to hold new string
   let str = ""
   for (let i = 0; i < word.length; i++){
-    // if we guessed a character
+    // assigns the current index in the word to the var letter
+    let letter = word[i]
+    // if we guessed a character from the array
+    if(guessedChars.includes(letter)) {
       // add character into our str
-    // else
+      str += letter ;
+    } else {
       // take the current value of str and add "_"
       str += '_ '
+    }
   }
   // set textContent of wordBLanks to be str and trim all extra whitespace
   wordBlanks.textContent = str.trim()
@@ -37,9 +58,10 @@ const randomIndex = Math.floor(Math.random() * words.length)
 // sets off timer 
   renderChars()
  }
-  // adds event listener for clicks to start button
-  startButton.addEventListener('click', startRound)
 
-  
+// adds event listener for clicks to start button
+startButton.addEventListener('click', startRound)
+// adds event listener  for key presses 
+document.addEventListener('keydown', handleKeyDown)
 
   
