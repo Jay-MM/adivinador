@@ -6,10 +6,13 @@ const wordBlanks = document.querySelector('.word-blanks');
   // score element"
 const scoreEl = document.querySelector('.score')
 
+const timer = document.querySelector('.timer-count');
+
 const validChars = "abcdefghijklmnopqrstuvwxyz"
 
 // defines an array of words
 const words = [ "modulus", "boolean", "object", "variable","array", "python", "string", "interval", "localstorage", "function" ];
+
 // word var
 let word;
   // assigns an array to the variable guessedchars
@@ -17,7 +20,28 @@ let guessedChars = [];
 
 // score var
 let score = 0;
+
 // timer var
+let timeLeft = 10
+
+let intervalId 
+
+function startCountDown(){
+  clearInterval(intervalId);
+  intervalId = setInterval( function(){
+    // decrease timeLeft
+      timeLeft--;
+    // assogn time left's content as the text content of the timer var
+      timer.textContent = timeLeft
+    // if timeLeft === 0
+    if (timeLeft === 0){
+      // stop game
+      clearInterval(intervalId);  
+      wordBlanks.textContent = "Game Over! Your score is " + score
+    }
+
+  }, 1000)
+}
 
 function checkWord(){
   // take the textContent from the wordBlanks elmnt and
@@ -69,7 +93,8 @@ const randomIndex = Math.floor(Math.random() * words.length)
   // uses the random index in the words array to access a random item in array and assigns it to the global word variable
   word = (words[randomIndex])
 // sets off timer 
-  renderChars()
+  renderChars();
+  startCountDown();
  }
 
 // adds event listener for clicks to start button
